@@ -23,9 +23,10 @@
 - [ ] Item collecting
 
 (HW)
-Static class to not use hard-coded tag names
-Win/level objective platform/zone
-Door lock opener item
-Collected item counter on ui
-Teleport OR Clone switcher item (student chooses which one)
-Cooler level design with sprite sheets (optional)
+
+- Static class to not use hard-coded tag names
+- Win/level objective platform/zone
+- Door lock opener item
+- Collected item counter on ui
+- Teleport OR Clone switcher item (student chooses which one)
+- Cooler level design with sprite sheets (optional)
