@@ -6,15 +6,17 @@
 ## TODO
 (Session 1)
 
-- [ ] Setup the project
-- [ ] Player move left right
-- [ ] Colliders
-- [ ] Jump
-- [ ] Design some level
-- [ ] Right and left edge swap
-- [ ] Death zone
+- [x] Setup the project
+- [x] Player move left right
+- [x] Colliders
+- [x] Jump
+- [x] Design some level
+- [x] Right and left edge swap
+- [x] Death zone
 
 (Session 2)
+
+- [ ] Static class for tag names
 - [ ] Clones
 - [ ] Moving arrow on top of the main player 
 - [ ] Clone freezer platform
@@ -24,7 +26,6 @@
 
 (HW)
 
-- Static class to not use hard-coded tag names
 - Win/level objective platform/zone
 - Door lock opener item
 - Collected item counter on ui
