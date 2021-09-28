@@ -12,8 +12,8 @@ description: > # this means to ignore newlines until "baseurl:"
   Blog for IUST Fundementals of Game Development Fall 2021 Course
 baseurl: "/game-course-fall-2021" # the subpath of your site, e.g. /blog
 url: "http://amuuu.github.io" # the base hostname & protocol for your site
-twitter_username: Bruh 
-github_username:  amuuu
+twitter_username:
+github_username:
 
 # Build settings
 markdown: kramdown
