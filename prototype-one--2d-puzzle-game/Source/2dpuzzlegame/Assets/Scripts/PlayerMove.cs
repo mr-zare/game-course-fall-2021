@@ -11,13 +11,16 @@ public class PlayerMove : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
 
-    public GameObject cloneObject;
+    public GameObject clones;
+    public CloneMove[] cloneMoves;
 
     private bool canJump;
 
     private Vector3 moveVector;
     void Start()
     {
+        cloneMoves = clones.GetComponentsInChildren<CloneMove>();
+
         canJump = true;
         moveVector = new Vector3(1 * factor, 0, 0);
     }
@@ -27,8 +30,8 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             transform.position += moveVector;
-            
-            cloneObject.GetComponent<CloneMove>().Move(moveVector);
+
+            MoveClones(moveVector, true);
 
             spriteRenderer.flipX = false;
 
@@ -38,7 +41,7 @@ public class PlayerMove : MonoBehaviour
         {
             transform.position -= moveVector;
 
-            cloneObject.GetComponent<CloneMove>().Move(moveVector * -1);
+            MoveClones(moveVector, false);
 
             spriteRenderer.flipX = true;
         }
@@ -46,6 +49,7 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             rb.AddForce(transform.up * jumpAmount, ForceMode2D.Impulse);
+            JumpClones(jumpAmount);
         }
 
 
@@ -69,7 +73,7 @@ public class PlayerMove : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("DeathZone"))
+        if (collision.gameObject.CompareTag(TagNames.DeathZone.ToString()))
         {
             Debug.Log("DEATH ZONE");
         }
@@ -81,13 +85,13 @@ public class PlayerMove : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("StickyPlatform"))
+        if (collision.gameObject.CompareTag(TagNames.StickyPlatform.ToString()))
         {
             Debug.LogWarning("sticky");
             canJump = false;
         }
 
-        if (collision.gameObject.CompareTag("ExitDoor"))
+        if (collision.gameObject.CompareTag(TagNames.ExitDoor.ToString()))
         {
             Debug.Log("exit door");
         }
@@ -96,11 +100,22 @@ public class PlayerMove : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("StickyPlatform"))
+        if (collision.gameObject.CompareTag(TagNames.StickyPlatform.ToString()))
         {
             Debug.LogWarning("sticky no more bruh");
             canJump = true;
         }
     }
 
+    public void MoveClones(Vector3 vec, bool isDirRight)
+    {
+        foreach (var c in cloneMoves)
+            c.Move(vec, isDirRight);
+    }
+
+    public void JumpClones(float amount)
+    {
+        foreach (var c in cloneMoves)
+            c.Jump(amount);
+    }
 }
