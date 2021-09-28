@@ -16,10 +16,10 @@
 
 (Session 2)
 
-- [ ] Static class for tag names
-- [ ] Clones
-- [ ] Moving arrow on top of the main player 
-- [ ] Clone freezer platform
+- [x] Static class for tag names
+- [x] Clones
+- [] Moving arrow on top of the main player 
+- [x] Clone freezer platform
 - [ ] Counter for freezed ones in ui
 - [ ] Simple state machine to handle consecutive conditions
 - [ ] Item collecting
