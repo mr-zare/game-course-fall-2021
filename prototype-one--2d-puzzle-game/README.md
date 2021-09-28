@@ -18,7 +18,7 @@
 
 - [x] Static class for tag names
 - [x] Clones
-- [] Moving arrow on top of the main player 
+- [ ] Moving arrow on top of the main player 
 - [x] Clone freezer platform
 - [ ] Counter for freezed ones in ui
 - [ ] Simple state machine to handle consecutive conditions
