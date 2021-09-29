@@ -20,6 +20,7 @@
 - [x] Clones
 - [ ] Moving arrow on top of the main player 
 - [x] Clone freezer platform
+- [ ] Talk about Rect Transform
 - [ ] Counter for freezed ones in ui
 - [ ] Simple state machine to handle consecutive conditions
 - [ ] Item collecting
