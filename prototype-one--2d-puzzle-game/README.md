@@ -1,6 +1,7 @@
 # Prototype 1
 
-## HW SUBMISSION GUIDE
+## HW
+Look at the blog ([this link](amuuu.github.io/game-course-fall-2021)).
 
 
 ## TODO
