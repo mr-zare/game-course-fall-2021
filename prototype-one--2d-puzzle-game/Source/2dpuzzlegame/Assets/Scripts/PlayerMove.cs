@@ -77,9 +77,11 @@ public class PlayerMove : MonoBehaviour
         {
             Debug.Log("DEATH ZONE");
         }
-        else
+        
+        if (collision.gameObject.CompareTag(TagNames.CollectableItem.ToString()))
         {
-            Debug.Log("NOT");
+            collision.gameObject.SetActive(false);
+            Debug.Log("POTION!");
         }
     }
 
@@ -95,6 +97,8 @@ public class PlayerMove : MonoBehaviour
         {
             Debug.Log("exit door");
         }
+
+       
 
     }
 

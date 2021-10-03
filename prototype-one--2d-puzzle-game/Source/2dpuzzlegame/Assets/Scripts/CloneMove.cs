@@ -10,7 +10,9 @@ public class CloneMove : MonoBehaviour
     public Rigidbody2D rb;
     private bool canJump;
     private bool canMove;
-    public Text counterText;
+    //public Text counterText; // Too dirty!
+
+    public EventSystemCustom eventSystem;
 
     private void Awake()
     {
@@ -68,8 +70,12 @@ public class CloneMove : MonoBehaviour
             Debug.LogWarning("sticky for clone");
 
             // Updating the UI text. But this is not a clean way. We'll fix it later.
-            int newTextValue = int.Parse(counterText.text) + 1;
-            counterText.text = newTextValue.ToString();
+            /*int newTextValue = int.Parse(counterText.text) + 1;
+            counterText.text = newTextValue.ToString();*/
+
+            // This is used by UiManager
+            eventSystem.OnCloneStickyPlatformEnter.Invoke();
+            Debug.Log("OnCloneStickyPlatformEnter fired.");
 
             canJump = false;
             canMove = false;
