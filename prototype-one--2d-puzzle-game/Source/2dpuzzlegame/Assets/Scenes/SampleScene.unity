@@ -170,7 +170,6 @@ MonoBehaviour:
   isMovingSameDirection: 0
   spriteRenderer: {fileID: 15280476}
   rb: {fileID: 15280475}
-  counterText: {fileID: 588809072}
   eventSystem: {fileID: 1587907882}
 --- !u!61 &15280474
 BoxCollider2D:
@@ -1201,7 +1200,7 @@ GameObject:
   - component: {fileID: 588809073}
   - component: {fileID: 588809072}
   m_Layer: 5
-  m_Name: Text
+  m_Name: CounterText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1383,7 +1382,6 @@ MonoBehaviour:
   isMovingSameDirection: 1
   spriteRenderer: {fileID: 682665344}
   rb: {fileID: 682665343}
-  counterText: {fileID: 588809072}
   eventSystem: {fileID: 1587907882}
 --- !u!61 &682665342
 BoxCollider2D:
@@ -2109,7 +2107,6 @@ MonoBehaviour:
   isMovingSameDirection: 1
   spriteRenderer: {fileID: 1233394730}
   rb: {fileID: 1233394729}
-  counterText: {fileID: 588809072}
   eventSystem: {fileID: 1587907882}
 --- !u!61 &1233394728
 BoxCollider2D:
@@ -3982,5 +3979,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7f631f71aaf1884b953c8d779a3c42f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 588809072}
+  counterText: {fileID: 588809072}
   eventSystem: {fileID: 1587907882}
