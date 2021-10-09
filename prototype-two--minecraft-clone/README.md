@@ -13,7 +13,6 @@ Look at the [Google docs file](https://docs.google.com/document/d/1vaXe57uNUifuu
 
 - [ ] Setup the project in URP
 - [ ] Player move
-- [ ] Make a bunch of placeholder blocks
 - [ ] SUPER simple block placer
 - [ ] Collect Objects
 
