@@ -1,4 +1,4 @@
-# Prototype 2 - Miceraft Clone
+# Prototype 2 - Minecraft Clone
 
 ## HW
 
@@ -11,15 +11,18 @@ Look at the [Google docs file](https://docs.google.com/document/d/1vaXe57uNUifuu
 ## TODO
 (Session 1)
 
-- [ ] Setup the project in URP
-- [ ] Player move
+- [x] Setup the project in URP
+- [x] Player move
+
+(Session 2)
+
 - [ ] SUPER simple block placer
 - [ ] Collect Objects
 
 (Buffer)
 
 - [ ] Place Objects
-- [ ] Mobs
+- [ ] Simple Mobs
 - [ ] Crafting
 
 (For the complete feature list, check out the [Google docs file](https://docs.google.com/document/d/1vaXe57uNUifuuDKu6_6PHGMRKBtjxhdzKvdM3FWPlM4/edit?usp=sharing).)
