@@ -4,13 +4,14 @@
 
 (Session 1)
 
-- [ ] Setup the project
-- [ ] Make and spawn a prefab
-- [ ] Spawn prefabs automatically based on a timer
+- [x] Setup the project
+- [x] Make and spawn a prefab
+- [x] Spawn prefabs automatically based on a timer
 - [ ] Have prefab settings inside scriptable object (the score count, drop force) (prefab -> script -> scriptable object)
-- [ ] Make the player move the plate so he/she can collect the food
+- [x] Make the player move the plate so he/she can collect the food
 - [ ] Increase score on collect based on the food's score stored in scriptable object
 - [ ] Spawn prefabs automatically based on the timer and player score
+- [ ] Destroy effect
 
 ## Teaching Objectives / Concepts
 
