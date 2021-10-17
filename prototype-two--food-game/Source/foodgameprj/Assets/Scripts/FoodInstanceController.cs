@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class FoodInstanceController : MonoBehaviour
 {
+    public FoodItemConfig config;
+    private Rigidbody rigidBody;
+
     private void Start()
     {
-        // rotate randomly
+        // change mass based on config
+        rigidBody = GetComponent<Rigidbody>();
+        rigidBody.mass = config.weight;
+
+        // rotate randomly when instantiating
         transform.Rotate(0, Random.Range(-45, 45), 0);
     }
 

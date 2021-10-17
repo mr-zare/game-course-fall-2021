@@ -261,6 +261,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAmount: 0.068
+  playerScore: 0
+  playerHeartsCount: 3
 --- !u!65 &294549516
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -652,9 +654,12 @@ MonoBehaviour:
   - {fileID: 669693224618794538, guid: 49a161c2cfc83d4418da676b6988128c, type: 3}
   - {fileID: 669693224618794538, guid: 28632f266dd27a547850606d8634cc19, type: 3}
   - {fileID: 669693224618794538, guid: f5b93f84df6a0ca41a122d3382f16c45, type: 3}
+  comboPrefabs:
+  - {fileID: 669693224618794538, guid: 4d057a17e270fdb42b8c0637eb096b32, type: 3}
   minX: -2.2
   maxX: 3
-  timerMaxTime: 1
+  timerMaxTime: 2
+  playerController: {fileID: 294549515}
 --- !u!1 &1938880699
 GameObject:
   m_ObjectHideFlags: 0
