@@ -2,7 +2,7 @@
 
 ## TODO
 
-(Session 1)
+(2 sessions)
 
 - [x] Setup the project
 - [x] Make and spawn a prefab
@@ -26,4 +26,4 @@
 - [ ] 3 new food prefabs
 - [ ] Display score and hearts on UI
 - [ ] Implementing lose condition
-- [ ] Balancing the game (UpdateTimerValueBasedOnScore, food weights, food scores, etc)
+- [ ] Balancing the game (timer value based on score, movement speed, food weights, food scores, etc)
