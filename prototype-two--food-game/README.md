@@ -10,9 +10,9 @@
 - [x] Have prefab settings inside scriptable object (the score count, drop force) (prefab -> script -> scriptable object)
 - [x] Make the player move the plate so he/she can collect the food
 - [x] Increase score on collect based on the food's score stored in scriptable object
-- [ ] Spawn prefabs automatically based on the timer and player score
+- [x] Spawn prefabs automatically based on the timer and player score
 - [x] Combo code structure
-- [ ] Destroy effect
+- [ ] Destroy effect (will be covered on next prototypes)
 
 ## Teaching Objectives / Concepts
 
