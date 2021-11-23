@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TetrisPreset
+public class Tetromino
 {
     public List<int[,]> rotations;
     private int currentRotationIndex;
-    
-    public int colorCode;
+    private int colorCode; 
+   
     public int GetLength() => rotations[0].GetLength(0);
 
-    public TetrisPreset()
+    public Tetromino()
     {
         currentRotationIndex = 0;
     }
@@ -22,6 +22,7 @@ public class TetrisPreset
         if (currentRotationIndex >= rotations.Count)
             currentRotationIndex = 0;
     }
+    
     public int GetCurrentRotationIndex() => currentRotationIndex;
 
     public int[] FindLowerBoundsOfPreset()
@@ -48,6 +49,7 @@ public class TetrisPreset
         }
         return bounds;
     }
+    
     public int GetHighestBoundY(int[] bounds)
     {
         int max = -2;
@@ -79,14 +81,16 @@ public class TetrisPreset
         return max;
     }
 
+    public void SetColor(int colorIndex) => colorCode = colorIndex;
 
+    public int GetColor() => colorCode;
 }
 
-public static class TetrisPresets
+public static class TetrominosContainer
 {
-    public static TetrisPreset GetPreset_L()
+    public static Tetromino GetPreset_L()
     {
-        TetrisPreset preset = new TetrisPreset();
+        Tetromino preset = new Tetromino();
         preset.rotations = new List<int[,]>();
 
         preset.rotations.Add(new int[3, 3]
@@ -114,14 +118,12 @@ public static class TetrisPresets
             {0, 1, 0}
         });
 
-        preset.colorCode = 1;
-        
         return preset;
     }
 
-    public static TetrisPreset GetPreset_O()
+    public static Tetromino GetPreset_O()
     {
-        TetrisPreset preset = new TetrisPreset();
+        Tetromino preset = new Tetromino();
         preset.rotations = new List<int[,]>();
 
         preset.rotations.Add(new int[2, 2]
@@ -130,14 +132,12 @@ public static class TetrisPresets
             {1, 1},
         });
 
-        preset.colorCode = 1;
-
         return preset;
     }
 
-    public static TetrisPreset GetPreset_I()
+    public static Tetromino GetPreset_I()
     {
-        TetrisPreset preset = new TetrisPreset();
+        Tetromino preset = new Tetromino();
         preset.rotations = new List<int[,]>();
 
         preset.rotations.Add(new int[4, 4]
@@ -155,14 +155,12 @@ public static class TetrisPresets
             {0, 0, 0, 0},
         });
 
-        preset.colorCode = 1;
-
         return preset;
     }
 
-    public static TetrisPreset GetPreset_T()
+    public static Tetromino GetPreset_T()
     {
-        TetrisPreset preset = new TetrisPreset();
+        Tetromino preset = new Tetromino();
         preset.rotations = new List<int[,]>();
 
         preset.rotations.Add(new int[3, 3]
@@ -190,13 +188,12 @@ public static class TetrisPresets
             {0, 1, 0}
         });
 
-        preset.colorCode = 1;
-
         return preset;
     }
-    public static TetrisPreset GetPreset_S()
+    
+    public static Tetromino GetPreset_S()
     {
-        TetrisPreset preset = new TetrisPreset();
+        Tetromino preset = new Tetromino();
         preset.rotations = new List<int[,]>();
 
         preset.rotations.Add(new int[3, 3]
@@ -224,9 +221,6 @@ public static class TetrisPresets
             {1, 0, 0}
         });
 
-        preset.colorCode = 1;
-
         return preset;
     }
-
 }

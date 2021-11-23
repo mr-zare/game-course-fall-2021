@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,8 +18,8 @@ public class GameController : MonoBehaviour
 
     public enum GameState
     {
-        BlockIsBeingPlaced,
-        NextBlockInQueue,
+        TetrominoIsBeingPlaced,
+        NextTetrominoInQueue,
         BossIsPassing,
         None
     };
@@ -34,10 +33,12 @@ public class GameController : MonoBehaviour
 
     private int lastChosenColor;
 
+    private List<GameObject> temporaryCurrentTetrominoGameObjects;
+
     private void Awake()
     {
         boardManager = new BoardManager(width, height);
-        state = GameState.NextBlockInQueue;
+        state = GameState.NextTetrominoInQueue;
 
         defaultTimeDelayBetweenEachMove = timeDelayBetweenEachMove;
         timer = Time.fixedTime + timeDelayBetweenEachMove;
@@ -47,7 +48,7 @@ public class GameController : MonoBehaviour
     {
         if (Time.fixedTime >= timer)
         {
-            if (state == GameState.BlockIsBeingPlaced)
+            if (state == GameState.TetrominoIsBeingPlaced)
             {
                 if (boardManager.CanKeepMovingThePreset())
                 {
@@ -55,11 +56,15 @@ public class GameController : MonoBehaviour
                 }
                 else
                 {
+                    //
+                    temporaryCurrentTetrominoGameObjects.Clear();
+
                     // check if a full row is complete and shift all rows by one
+
 
                     // place the preset on board permentantly
                     // change state
-                    state = GameState.NextBlockInQueue;
+                    state = GameState.NextTetrominoInQueue;
                 }
             }
 
@@ -75,10 +80,10 @@ public class GameController : MonoBehaviour
 
 
             // after boss has passed
-            state = GameState.NextBlockInQueue;
+            state = GameState.NextTetrominoInQueue;
         }
 
-        if (state == GameState.NextBlockInQueue)
+        if (state == GameState.NextTetrominoInQueue)
         {
             // choose the next preset
             //boardManager.ChooseNextPreset();
@@ -86,24 +91,54 @@ public class GameController : MonoBehaviour
 
             ChooseNewColor();
 
+            temporaryCurrentTetrominoGameObjects = new List<GameObject>();
+            RenderDifferences(instantiateForNewTetromino: true);
 
-            // place it on top of the board
-
-
-            state = GameState.BlockIsBeingPlaced;
+            state = GameState.TetrominoIsBeingPlaced;
         }
 
-        if (state == GameState.BlockIsBeingPlaced)
+        if (state == GameState.TetrominoIsBeingPlaced)
         {
             if (boardManager.CanKeepMovingThePreset())
             {
                 HandlePresetControlByPlayer();
             }
 
-            boardManager.PreviewNextPresetPosition();
+            boardManager.UpdateBoardLogically();
             //boardManager.CheckAndEraseFullRows();
 
-            RenderBoard();
+            RenderDifferences();
+        }
+    }
+
+    private void RenderDifferences(bool instantiateForNewTetromino = false)
+    {
+        // get tetromino current (default) rotation
+        int[,] currentTetromino = boardManager.GetCurrentTetrominoRotation();
+
+        // instnatiate respective color objects in the current places
+        var bounds = boardManager.GetCurrentTetrominoBounds();
+
+        int counter = 0;
+        for (int i = bounds.Item1; i < bounds.Item3; i++)
+        {
+            for (int j = bounds.Item2; j < bounds.Item4; j++)
+            {
+                if (currentTetromino[i - bounds.Item1, j - bounds.Item2] != 0)
+                {
+                    if (instantiateForNewTetromino)
+                    { 
+                        var block = Instantiate(blockViewTypes[lastChosenColor], boardObjectsParent.transform);
+                        block.transform.position = new Vector3(i * gridUnitSize - widthOffset, (height - j) * gridUnitSize - heightOffset, 0);
+                        temporaryCurrentTetrominoGameObjects.Add(block);
+                    }
+                    else
+                    {
+                        temporaryCurrentTetrominoGameObjects[counter].transform.position = new Vector3(i * gridUnitSize - widthOffset, (height - j) * gridUnitSize - heightOffset, 0);
+                        counter++;
+                    }
+                }
+            }
         }
     }
 
@@ -135,41 +170,16 @@ public class GameController : MonoBehaviour
             timeDelayBetweenEachMove = defaultTimeDelayBetweenEachMove;
         }
     }
-    void RenderBoard()
-    {
-        //boardManager.DrawBoardLogically();
-
-        WipeBoardRender();
-
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                if (boardManager.gameBoard[i, j] != 0)
-                {
-                    var block = Instantiate(blockViewTypes[boardManager.gameBoard[i, j] - 1], boardObjectsParent.transform);
-                    
-                    block.transform.position = new Vector3(i * gridUnitSize - widthOffset, (height - j) * gridUnitSize - heightOffset, 0);
-                }
-            }
-        }
-    }
     
-    private void WipeBoardRender()
-    {
-        for (int i = 0; i < boardObjectsParent.transform.childCount; i++)
-            Destroy(boardObjectsParent.transform.GetChild(i).gameObject);
-    }
-
+    
     private void ChooseNewColor()
     {
         int newColor;
         do
         {
-            newColor = UnityEngine.Random.Range(1, blockViewTypes.Length + 1);
+            newColor = UnityEngine.Random.Range(0, blockViewTypes.Length);
         } while (lastChosenColor == newColor);
 
-        boardManager.SetColorForCurrentPreset(newColor);
         lastChosenColor = newColor;
     }
 }

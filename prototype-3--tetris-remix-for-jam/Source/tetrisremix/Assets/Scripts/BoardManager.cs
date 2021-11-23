@@ -7,11 +7,11 @@ public class BoardManager
     private int height;
     private int width;
 
-    private List<TetrisPreset> presets;
+    private List<Tetromino> presets;
     public int[,] gameBoard;
-    private TetrisPreset nextPresetToPlace;
+    private Tetromino nextTetrominoToPlace;
 
-    private Vector2 nextPresetCurrentPosition;
+    private Vector2 nextTetrominoCurrentPosition;
     private Vector2 defaultInitialPosition;
     private List<Vector2> nextPresetVisitedPositions;
 
@@ -20,7 +20,7 @@ public class BoardManager
         this.height = height;
         this.width = width;
         defaultInitialPosition = new Vector2(width / 2, 0);
-        nextPresetCurrentPosition = defaultInitialPosition;
+        nextTetrominoCurrentPosition = defaultInitialPosition;
 
         gameBoard = new int[width, height];
 
@@ -28,15 +28,16 @@ public class BoardManager
 
         _InitPresets();
     }
+    
     private void _InitPresets()
     {
-        presets = new List<TetrisPreset>();
+        presets = new List<Tetromino>();
         
-        presets.Add(TetrisPresets.GetPreset_L());
-        presets.Add(TetrisPresets.GetPreset_O());
-        presets.Add(TetrisPresets.GetPreset_I());
-        presets.Add(TetrisPresets.GetPreset_T());
-        presets.Add(TetrisPresets.GetPreset_S());
+        presets.Add(TetrominosContainer.GetPreset_L());
+        presets.Add(TetrominosContainer.GetPreset_O());
+        presets.Add(TetrominosContainer.GetPreset_I());
+        presets.Add(TetrominosContainer.GetPreset_T());
+        presets.Add(TetrominosContainer.GetPreset_S());
     }
     
     public void DrawBoardLogically()
@@ -53,6 +54,7 @@ public class BoardManager
 
         Debug.Log(board);
     }
+    
     public void ChooseNextPreset(int manualIndex = -1)
     {
 
@@ -62,20 +64,20 @@ public class BoardManager
         else
             index = manualIndex;
         
-        nextPresetToPlace = presets[index];
+        nextTetrominoToPlace = presets[index];
         
-        nextPresetCurrentPosition = defaultInitialPosition;
+        nextTetrominoCurrentPosition = defaultInitialPosition;
         
         nextPresetVisitedPositions.Clear();
 
     }
     
-    public void PreviewNextPresetPosition()
+    public void UpdateBoardLogically()
     {
-        int length = nextPresetToPlace.GetLength();
+        int length = nextTetrominoToPlace.GetLength();
 
-        int x = (int)nextPresetCurrentPosition.x;
-        int y = (int)nextPresetCurrentPosition.y;
+        int x = (int)nextTetrominoCurrentPosition.x;
+        int y = (int)nextTetrominoCurrentPosition.y;
 
         WipePreviosulyVisitedPlacesByNextPresetLogically();
 
@@ -83,9 +85,9 @@ public class BoardManager
         {
             for (int j = y; j < y + length; j++)
             {
-                if (nextPresetToPlace.rotations[nextPresetToPlace.GetCurrentRotationIndex()][i-x,j - y] != 0)
+                if (nextTetrominoToPlace.rotations[nextTetrominoToPlace.GetCurrentRotationIndex()][i-x ,j - y] != 0)
                 { 
-                    gameBoard[i, j] = nextPresetToPlace.colorCode;
+                    gameBoard[i, j] = 1;
                     nextPresetVisitedPositions.Add(new Vector2(i, j));
                 }
             }
@@ -94,13 +96,12 @@ public class BoardManager
     
     public void MovePresetDownwards()
     {
-        nextPresetCurrentPosition.y++;
+        nextTetrominoCurrentPosition.y++;
 
         // check collision witht previoulsy placed presets
-        if (nextPresetCurrentPosition.y + nextPresetToPlace.GetLength() >= height)
-            nextPresetCurrentPosition.y = height - 1 - nextPresetToPlace.GetLength();
+        if (nextTetrominoCurrentPosition.y + nextTetrominoToPlace.GetLength() >= height)
+            nextTetrominoCurrentPosition.y = height - 1 - nextTetrominoToPlace.GetLength();
     }
-
 
     public void MovePresetToRightAndLeft(bool isRight)
     {
@@ -108,26 +109,26 @@ public class BoardManager
         
         if (isRight)
         {
-            if (nextPresetCurrentPosition.x + nextPresetToPlace.GetHighestBoundRight() + 1 >= width)
+            if (nextTetrominoCurrentPosition.x + nextTetrominoToPlace.GetHighestBoundRight() + 1 >= width)
                 return;
 
-            nextPresetCurrentPosition.x++;
+            nextTetrominoCurrentPosition.x++;
         }
         else
         {
-            if (nextPresetCurrentPosition.x - 1 < 0)
+            if (nextTetrominoCurrentPosition.x - 1 < 0)
                 return;
 
-            nextPresetCurrentPosition.x--;
+            nextTetrominoCurrentPosition.x--;
         }
         
-        Debug.Log("X => " + nextPresetCurrentPosition.x);
-        Debug.Log("B => " + nextPresetToPlace.GetHighestBoundRight());
+        Debug.Log("X => " + nextTetrominoCurrentPosition.x);
+        Debug.Log("B => " + nextTetrominoToPlace.GetHighestBoundRight());
     }
 
     public void RotateNextPreset()
     {
-        nextPresetToPlace.Rotate();
+        nextTetrominoToPlace.Rotate();
     }
 
     public void WipePreviosulyVisitedPlacesByNextPresetLogically()
@@ -137,18 +138,19 @@ public class BoardManager
         {
             gameBoard[(int)pos.x, (int)pos.y] = 0;
         }
+
         nextPresetVisitedPositions.Clear();
     }
 
     public bool CanKeepMovingThePreset()
     {
         
-        int length = nextPresetToPlace.GetLength();
-        int x = (int)nextPresetCurrentPosition.x;
-        int y = (int)nextPresetCurrentPosition.y;
-        int[] lowerBounds = nextPresetToPlace.FindLowerBoundsOfPreset();
+        int length = nextTetrominoToPlace.GetLength();
+        int x = (int)nextTetrominoCurrentPosition.x;
+        int y = (int)nextTetrominoCurrentPosition.y;
+        int[] lowerBounds = nextTetrominoToPlace.FindLowerBoundsOfPreset();
 
-        if (nextPresetCurrentPosition.y + nextPresetToPlace.GetHighestBoundY(lowerBounds) + 1 >= height - 1)
+        if (nextTetrominoCurrentPosition.y + nextTetrominoToPlace.GetHighestBoundY(lowerBounds) + 1 >= height - 1)
             return false;
 
         for (int i = x; i < x + length; i++)
@@ -164,7 +166,7 @@ public class BoardManager
 
     public void SetColorForCurrentPreset(int colorIndex)
     {
-        nextPresetToPlace.colorCode = colorIndex;
+        nextTetrominoToPlace.SetColor(colorIndex);
     }
 
     public void CheckAndEraseFullRows()
@@ -183,9 +185,28 @@ public class BoardManager
                 }
             }
         }
+
         for (int j = 0; j < height; j++)
         {
+            if (rowBlocksAreFull[j])
+            {
 
+            }
         }
     }
+
+    public int[,] GetCurrentTetrominoRotation()
+    {
+        return nextTetrominoToPlace.rotations[nextTetrominoToPlace.GetCurrentRotationIndex()];
+    }
+
+    public (int, int, int , int) GetCurrentTetrominoBounds()
+    {
+        int length = nextTetrominoToPlace.GetLength();
+
+        return ((int)nextTetrominoCurrentPosition.x, (int)nextTetrominoCurrentPosition.y,
+            (int)nextTetrominoCurrentPosition.x + length, (int)nextTetrominoCurrentPosition.y + length);
+    }
+
+    public int GetCurrentTetrominoLength() => nextTetrominoToPlace.GetLength();
 }
