@@ -7,13 +7,16 @@ public class Tetromino
 {
     public List<int[,]> rotations;
     private int currentRotationIndex;
-    private int colorCode; 
-   
+    private int colorCode;
+    public string name;
+
     public int GetLength() => rotations[0].GetLength(0);
 
-    public Tetromino()
+    public Tetromino(string name)
     {
         currentRotationIndex = 0;
+        
+        this.name = name;
     }
 
     public void Rotate()
@@ -81,6 +84,26 @@ public class Tetromino
         return max;
     }
 
+    public int GetHighestBoundLeft()
+    {
+        int length = GetLength();
+
+        int min = 100;
+
+        for (int j = 0; j < length; j++)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                if (rotations[GetCurrentRotationIndex()][i, j] != 0)
+                {
+                    if (i < min)
+                        min = i;
+                }
+            }
+        }
+        return min;
+    }
+
     public void SetColor(int colorIndex) => colorCode = colorIndex;
 
     public int GetColor() => colorCode;
@@ -90,7 +113,7 @@ public static class TetrominosContainer
 {
     public static Tetromino GetPreset_L()
     {
-        Tetromino preset = new Tetromino();
+        Tetromino preset = new Tetromino("L");
         preset.rotations = new List<int[,]>();
 
         preset.rotations.Add(new int[3, 3]
@@ -123,7 +146,7 @@ public static class TetrominosContainer
 
     public static Tetromino GetPreset_O()
     {
-        Tetromino preset = new Tetromino();
+        Tetromino preset = new Tetromino("O");
         preset.rotations = new List<int[,]>();
 
         preset.rotations.Add(new int[2, 2]
@@ -137,7 +160,7 @@ public static class TetrominosContainer
 
     public static Tetromino GetPreset_I()
     {
-        Tetromino preset = new Tetromino();
+        Tetromino preset = new Tetromino("I");
         preset.rotations = new List<int[,]>();
 
         preset.rotations.Add(new int[4, 4]
@@ -160,7 +183,7 @@ public static class TetrominosContainer
 
     public static Tetromino GetPreset_T()
     {
-        Tetromino preset = new Tetromino();
+        Tetromino preset = new Tetromino("T");
         preset.rotations = new List<int[,]>();
 
         preset.rotations.Add(new int[3, 3]
@@ -193,7 +216,7 @@ public static class TetrominosContainer
     
     public static Tetromino GetPreset_S()
     {
-        Tetromino preset = new Tetromino();
+        Tetromino preset = new Tetromino("S");
         preset.rotations = new List<int[,]>();
 
         preset.rotations.Add(new int[3, 3]

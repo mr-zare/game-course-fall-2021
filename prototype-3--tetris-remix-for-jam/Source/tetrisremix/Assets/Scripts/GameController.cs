@@ -60,7 +60,8 @@ public class GameController : MonoBehaviour
                     temporaryCurrentTetrominoGameObjects.Clear();
 
                     // check if a full row is complete and shift all rows by one
-
+                    bool[] fullRows = boardManager.CheckAndEraseFullRows();
+                    RemoveFullRowsFromRender(fullRows);
 
                     // place the preset on board permentantly
                     // change state
@@ -87,7 +88,10 @@ public class GameController : MonoBehaviour
         {
             // choose the next preset
             //boardManager.ChooseNextPreset();
-            boardManager.ChooseNextPreset();
+            boardManager.InitializeNextPreset();
+            boardManager.ChooseNextNextPresetIndex();
+            
+            Debug.Log("NEXT IN LINE :::" + boardManager.GetNextNextPresetName());
 
             ChooseNewColor();
 
@@ -110,7 +114,27 @@ public class GameController : MonoBehaviour
             RenderDifferences();
         }
     }
+    
+    private void RemoveFullRowsFromRender(bool[] fullRows)
+    {
+        // TODO: SHIFT ROWS TO DOWNWARDS
 
+        var childTransforms = boardObjectsParent.transform.GetComponentsInChildren<Transform>();
+
+        foreach (var t in childTransforms)
+        {
+            for (int i = 0; i < fullRows.Length; i++)
+            {
+                if (fullRows[i])
+                {
+                    if (t.position.y - ((height - i) * gridUnitSize - heightOffset) < 0.002)
+                    {
+                        Destroy(t.gameObject);
+                    }
+                }
+            }
+        }
+    }
     private void RenderDifferences(bool instantiateForNewTetromino = false)
     {
         // get tetromino current (default) rotation
@@ -170,7 +194,6 @@ public class GameController : MonoBehaviour
             timeDelayBetweenEachMove = defaultTimeDelayBetweenEachMove;
         }
     }
-    
     
     private void ChooseNewColor()
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BoardManager
@@ -14,6 +15,8 @@ public class BoardManager
     private Vector2 nextTetrominoCurrentPosition;
     private Vector2 defaultInitialPosition;
     private List<Vector2> nextPresetVisitedPositions;
+
+    public int presetIndexForNextNEXT;
 
     public BoardManager(int width, int height)
     {
@@ -38,40 +41,43 @@ public class BoardManager
         presets.Add(TetrominosContainer.GetPreset_I());
         presets.Add(TetrominosContainer.GetPreset_T());
         presets.Add(TetrominosContainer.GetPreset_S());
+
+        ChooseNextNextPresetIndex();
     }
     
     public void DrawBoardLogically()
     {
-        string board = "";
+        string board = "0, ";
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
             {
                 board += gameBoard[j, i];
             }
-            board += "\n";
+            board += "\n" + i + ", " ;
         }
 
         Debug.Log(board);
     }
     
-    public void ChooseNextPreset(int manualIndex = -1)
+    public void InitializeNextPreset()
     {
+        int index = presetIndexForNextNEXT;
 
-        int index;
-        if (manualIndex == -1)
-            index = UnityEngine.Random.Range(0, presets.Count);
-        else
-            index = manualIndex;
-        
         nextTetrominoToPlace = presets[index];
         
         nextTetrominoCurrentPosition = defaultInitialPosition;
         
         nextPresetVisitedPositions.Clear();
-
     }
-    
+
+    public void ChooseNextNextPresetIndex()
+    {
+        presetIndexForNextNEXT = UnityEngine.Random.Range(0, presets.Count);
+    }
+
+    public string GetNextNextPresetName() => presets[presetIndexForNextNEXT].name;
+
     public void UpdateBoardLogically()
     {
         int length = nextTetrominoToPlace.GetLength();
@@ -98,14 +104,16 @@ public class BoardManager
     {
         nextTetrominoCurrentPosition.y++;
 
+        int[] lowerBounds = nextTetrominoToPlace.FindLowerBoundsOfPreset();
+        int maxY = lowerBounds.Max();
+
         // check collision witht previoulsy placed presets
-        if (nextTetrominoCurrentPosition.y + nextTetrominoToPlace.GetLength() >= height)
-            nextTetrominoCurrentPosition.y = height - 1 - nextTetrominoToPlace.GetLength();
+        if (nextTetrominoCurrentPosition.y + maxY >= height)
+            nextTetrominoCurrentPosition.y = height - 1 - maxY;
     }
 
     public void MovePresetToRightAndLeft(bool isRight)
     {
-        Debug.Log(".");
         
         if (isRight)
         {
@@ -116,14 +124,16 @@ public class BoardManager
         }
         else
         {
-            if (nextTetrominoCurrentPosition.x - 1 < 0)
+            Debug.Log("b ~ " + nextTetrominoToPlace.GetHighestBoundLeft());
+            Debug.Log("x ~ " + nextTetrominoCurrentPosition.x);
+
+
+            if (nextTetrominoCurrentPosition.x + nextTetrominoToPlace.GetHighestBoundLeft() - 1 < 0)
                 return;
 
             nextTetrominoCurrentPosition.x--;
         }
         
-        Debug.Log("X => " + nextTetrominoCurrentPosition.x);
-        Debug.Log("B => " + nextTetrominoToPlace.GetHighestBoundRight());
     }
 
     public void RotateNextPreset()
@@ -169,7 +179,7 @@ public class BoardManager
         nextTetrominoToPlace.SetColor(colorIndex);
     }
 
-    public void CheckAndEraseFullRows()
+    public bool[] CheckAndEraseFullRows()
     {
         bool[] rowBlocksAreFull = new bool[height];
         for (int j = 0; j < height; j++)
@@ -186,13 +196,23 @@ public class BoardManager
             }
         }
 
-        for (int j = 0; j < height; j++)
+        for (int j = height - 1; j >= 0; j--)
         {
             if (rowBlocksAreFull[j])
             {
+                Debug.Log("Full row detected");
 
+                for (int k = j; k > 0; k--)
+                {
+                    for (int i = 0; i < width; i++)
+                    {
+                        gameBoard[i, k] = gameBoard[i, k - 1];
+                    }
+                }
             }
         }
+
+        return rowBlocksAreFull;
     }
 
     public int[,] GetCurrentTetrominoRotation()
